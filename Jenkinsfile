@@ -8,13 +8,10 @@
     }
     stage("Integration Test") {
       try {
-        script
-        {
-        containeridt = sh "docker ps --filter label=com.docker.swarm.service.name=cd-demo --format "{{.ID}}""
-        }
+       
+        def lines = sh(script: 'docker ps --filter label=com.docker.swarm.service.name=cd-demo --format "{{.ID}}"', returnStdout: true).split("\r?\n")
         sh "docker build -t cd-demo ."
-        sh "docker stop ${containerid}
-        sh "docker rm -f ${containerid} || true"
+       
         sh "docker run -d -p 8080:8080 --name=cd-demo cd-demo"
         // env variable is used to set the server where go test will connect to run the test
         sh "docker run --rm -v ${WORKSPACE}:/go/src/cd-demo --link=cd-demo -e SERVER=cd-demo golang go test cd-demo -v --run Integration"
