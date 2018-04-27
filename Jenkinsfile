@@ -1,5 +1,5 @@
   env.DOCKERHUB_USERNAME = 'ajaykm'
-
+  def containeridt
   node("docker-test") {
     checkout scm
 
@@ -8,7 +8,7 @@
     }
     stage("Integration Test") {
       try {
-        def containerid = sh (script: "docker ps --filter label=com.docker.swarm.service.name=cd-demo --format "{{.ID}}"" , returnStdout: true)
+        containeridt = sh (script: "docker ps --filter label=com.docker.swarm.service.name=cd-demo --format "{{.ID}}"" , returnStdout: true)
         sh "docker build -t cd-demo ."
         sh "docker stop ${containerid}
         sh "docker rm -f ${containerid} || true"
