@@ -8,7 +8,10 @@
     }
     stage("Integration Test") {
       try {
-        containeridt = sh (script: "docker ps --filter label=com.docker.swarm.service.name=cd-demo --format "{{.ID}}"")
+        script
+        {
+        containeridt = sh "docker ps --filter label=com.docker.swarm.service.name=cd-demo --format "{{.ID}}""
+        }
         sh "docker build -t cd-demo ."
         sh "docker stop ${containerid}
         sh "docker rm -f ${containerid} || true"
