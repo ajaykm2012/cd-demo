@@ -9,7 +9,7 @@
     stage("Integration Test") {
       try {
        
-        def contain = sh(script: 'docker ps --filter label=com.docker.swarm.service.name=cd-demo --format "{{.ID}}"', returnStdout: true).split("\r?\n")
+        def contain = sh(script: 'docker ps --filter label=com.docker.swarm.service.name=cd-demo --format "{{.ID}}"', returnStdout: true)
         sh "docker build -t cd-demo ."
         sh "docker rm -f ${contain} || true"
         sh "docker run -d -p 8080:8080 --name=cd-demo cd-demo"
